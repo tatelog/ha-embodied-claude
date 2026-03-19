@@ -1,0 +1,48 @@
+---
+name: Embodied Claude
+description: Claude Code with embodied MCP servers (wifi-cam, memory, tts, system-temperature)
+version: "0.1.0"
+slug: embodied-claude
+url: https://github.com/tatelog/ha-embodied-claude
+arch:
+  - amd64
+startup: application
+boot: auto
+init: false
+host_network: true
+hassio_api: true
+homeassistant_api: true
+
+options:
+  tapo_camera_host: ""
+  tapo_username: ""
+  tapo_password: ""
+  tapo_onvif_port: 2020
+  tapo_mount_mode: "normal"
+  anthropic_api_key: ""
+  memory_db_path: "/data/memories/memory.db"
+
+schema:
+  tapo_camera_host: str
+  tapo_username: str
+  tapo_password: password
+  tapo_onvif_port: port
+  tapo_mount_mode: list(normal|ceiling)
+  anthropic_api_key: password
+  memory_db_path: str
+
+ports:
+  "7681/tcp": null
+ports_description:
+  "7681/tcp": "Web terminal (ttyd)"
+
+map:
+  - addon_config:rw
+  - ssl:ro
+  - share:rw
+
+environment:
+  PYTHONDONTWRITEBYTECODE: "1"
+
+panel_icon: mdi:robot-happy
+panel_title: Embodied Claude

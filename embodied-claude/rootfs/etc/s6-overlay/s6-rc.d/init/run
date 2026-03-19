@@ -1,0 +1,18 @@
+#!/command/with-contenv bashio
+# ==============================================================================
+# Initialize Embodied Claude add-on
+# ==============================================================================
+
+bashio::log.info "Initializing Embodied Claude..."
+
+# Validate configuration
+if ! bashio::config.has_value 'tapo_camera_host'; then
+    bashio::log.warning "Tapo camera host not configured yet"
+fi
+
+if ! bashio::config.has_value 'anthropic_api_key'; then
+    bashio::log.error "Anthropic API key is required"
+    bashio::exit.nok
+fi
+
+bashio::log.info "Configuration validated"
