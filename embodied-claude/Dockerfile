@@ -1,22 +1,30 @@
-ARG BUILD_FROM=ghcr.io/home-assistant/amd64-base:3.20
+ARG BUILD_FROM=ghcr.io/home-assistant/amd64-base-debian:bookworm
 FROM ${BUILD_FROM}
 
 # Install system dependencies
-RUN apk add --no-cache \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
-    py3-pip \
-    py3-numpy \
+    python3-venv \
+    python3-dev \
     ffmpeg \
     git \
     curl \
     bash \
-    ttyd \
-    nodejs \
-    npm \
-    build-base \
-    python3-dev \
+    jq \
+    build-essential \
     libffi-dev \
-    musl-dev
+    && rm -rf /var/lib/apt/lists/*
+
+# Install ttyd
+RUN curl -fsSL https://github.com/nicm/tmux/releases/latest/download/tmux.tar.gz -o /dev/null || true && \
+    curl -fsSL https://github.com/nicm/tmux/releases/latest/download/tmux.tar.gz -o /dev/null || true
+RUN curl -fsSL -o /usr/local/bin/ttyd https://github.com/nicm/tmux/releases/latest/download/tmux-static-linux-amd64 || \
+    apt-get update && apt-get install -y --no-install-recommends ttyd && rm -rf /var/lib/apt/lists/* || true
+
+# Install Node.js 20
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y --no-install-recommends nodejs && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install uv (Python package manager)
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
