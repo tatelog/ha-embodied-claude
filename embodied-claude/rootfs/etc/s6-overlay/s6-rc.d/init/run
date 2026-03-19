@@ -11,8 +11,7 @@ if ! bashio::config.has_value 'tapo_camera_host'; then
 fi
 
 if ! bashio::config.has_value 'anthropic_api_key'; then
-    bashio::log.error "Anthropic API key is required"
-    bashio::exit.nok
+    bashio::log.info "No API key set - use 'claude login' in the web terminal to authenticate"
 fi
 
 bashio::log.info "Configuration validated"
