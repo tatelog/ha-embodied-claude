@@ -1,3 +1,9 @@
+## 0.2.0
+
+- Switch to pre-built Docker image from GHCR (faster install)
+- Switch base image to Debian bookworm for PyTorch compatibility
+- Allow OAuth login (API key optional)
+
 ## 0.1.0
 
 - Initial release

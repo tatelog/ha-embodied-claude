@@ -1,7 +1,7 @@
 ---
 name: Embodied Claude
 description: Claude Code with embodied MCP servers (wifi-cam, memory, tts, system-temperature)
-version: "0.1.0"
+version: "0.2.0"
 slug: embodied-claude
 url: https://github.com/tatelog/ha-embodied-claude
 image: ghcr.io/tatelog/embodied-claude-{arch}
