@@ -16,9 +16,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Install ttyd (web terminal)
-RUN curl -fsSL -o /usr/local/bin/ttyd https://github.com/nicm/tmux/releases/latest/download/tmux-static-linux-amd64 2>/dev/null || \
-    (apt-get update && apt-get install -y --no-install-recommends ttyd && rm -rf /var/lib/apt/lists/*) || \
-    (curl -fsSL -o /usr/local/bin/ttyd "https://github.com/nicm/tmux/releases/latest/download/tmux.tar.gz" && chmod +x /usr/local/bin/ttyd) || true
+RUN curl -fsSL -o /usr/local/bin/ttyd https://github.com/nicm/ttyd/releases/latest/download/ttyd.x86_64 && \
+    chmod +x /usr/local/bin/ttyd
 
 # Install Node.js 20
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
