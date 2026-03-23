@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Install ttyd (web terminal)
-RUN curl -fsSL -o /usr/local/bin/ttyd https://github.com/nicm/ttyd/releases/latest/download/ttyd.x86_64 && \
+RUN curl -fsSL -o /usr/local/bin/ttyd https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.x86_64 && \
     chmod +x /usr/local/bin/ttyd
 
 # Install Node.js 20
