@@ -34,6 +34,10 @@ RUN npm install -g @anthropic-ai/claude-code
 # Clone embodied-claude repository
 RUN git clone --depth 1 https://github.com/lifemate-ai/embodied-claude.git /opt/embodied-claude
 
+# Patch memory-mcp: replace PyTorch with ONNX Runtime (4GB -> 500MB RAM)
+COPY patches/memory-mcp-embedding.py /opt/embodied-claude/memory-mcp/src/memory_mcp/embedding.py
+COPY patches/memory-mcp-pyproject.toml /opt/embodied-claude/memory-mcp/pyproject.toml
+
 # Install each MCP server's dependencies
 WORKDIR /opt/embodied-claude
 
