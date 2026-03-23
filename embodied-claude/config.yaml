@@ -1,7 +1,7 @@
 ---
 name: Embodied Claude
 description: Claude Code with embodied MCP servers (wifi-cam, memory, tts, system-temperature)
-version: "0.3.2"
+version: "0.4.0"
 slug: embodied-claude
 url: https://github.com/tatelog/ha-embodied-claude
 image: ghcr.io/tatelog/embodied-claude-{arch}
@@ -21,6 +21,8 @@ options:
   tapo_onvif_port: 2020
   tapo_mount_mode: "normal"
   anthropic_api_key: ""
+  claude_oauth_token: ""
+  claude_refresh_token: ""
   memory_db_path: "/data/memories/memory.db"
 
 schema:
@@ -30,6 +32,8 @@ schema:
   tapo_onvif_port: port
   tapo_mount_mode: list(normal|ceiling)
   anthropic_api_key: password
+  claude_oauth_token: password
+  claude_refresh_token: password
   memory_db_path: str
 
 ports:
