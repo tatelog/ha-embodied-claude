@@ -15,11 +15,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libffi-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Install ttyd
-RUN curl -fsSL https://github.com/nicm/tmux/releases/latest/download/tmux.tar.gz -o /dev/null || true && \
-    curl -fsSL https://github.com/nicm/tmux/releases/latest/download/tmux.tar.gz -o /dev/null || true
-RUN curl -fsSL -o /usr/local/bin/ttyd https://github.com/nicm/tmux/releases/latest/download/tmux-static-linux-amd64 || \
-    apt-get update && apt-get install -y --no-install-recommends ttyd && rm -rf /var/lib/apt/lists/* || true
+# Install ttyd (web terminal)
+RUN curl -fsSL -o /usr/local/bin/ttyd https://github.com/nicm/tmux/releases/latest/download/tmux-static-linux-amd64 2>/dev/null || \
+    (apt-get update && apt-get install -y --no-install-recommends ttyd && rm -rf /var/lib/apt/lists/*) || \
+    (curl -fsSL -o /usr/local/bin/ttyd "https://github.com/nicm/tmux/releases/latest/download/tmux.tar.gz" && chmod +x /usr/local/bin/ttyd) || true
 
 # Install Node.js 20
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
@@ -44,8 +43,7 @@ RUN cd wifi-cam-mcp && uv sync && cd .. && \
     cd tts-mcp && uv sync && cd .. && \
     cd system-temperature-mcp && uv sync && cd ..
 
-# Copy run script and config
-COPY rootfs /
+# Copy run script
 COPY run.sh /
 RUN chmod a+x /run.sh
 
