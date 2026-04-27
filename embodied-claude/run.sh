@@ -72,8 +72,9 @@ echo " Camera: ${TAPO_CAMERA_HOST}"
 echo " Memory: ${MEMORY_DB_PATH}"
 echo "============================================"
 
-# Start ttyd (web terminal) with Claude Code
+# Start ttyd (web terminal) with bash
+# (run 'claude' manually inside the terminal)
 exec ttyd \
     --port 7681 \
     --writable \
-    bash -c "cd /opt/embodied-claude && claude"
+    bash -c "cd /opt/embodied-claude && exec bash"
