@@ -26,13 +26,23 @@ export MEMORY_DB_PATH
 # Ensure memory directory exists
 mkdir -p "$(dirname "$MEMORY_DB_PATH")"
 
-# Setup Claude Code OAuth credentials if provided
-if [ -n "$CLAUDE_OAUTH_TOKEN" ] && [ "$CLAUDE_OAUTH_TOKEN" != "null" ]; then
-    mkdir -p /root/.claude
-    cat > /root/.claude/.credentials.json <<CREDS
+# Persist Claude Code config across add-on restarts
+# /data is HA add-on persistent storage; /root/.claude is ephemeral
+mkdir -p /data/claude
+rm -rf /root/.claude
+ln -s /data/claude /root/.claude
+
+# Setup Claude Code OAuth credentials
+# Priority: 1) existing persisted credentials, 2) HA config tokens, 3) none (manual /login)
+if [ ! -f /data/claude/.credentials.json ] && [ -n "$CLAUDE_OAUTH_TOKEN" ] && [ "$CLAUDE_OAUTH_TOKEN" != "null" ]; then
+    cat > /data/claude/.credentials.json <<CREDS
 {"claudeAiOauth":{"accessToken":"${CLAUDE_OAUTH_TOKEN}","refreshToken":"${CLAUDE_REFRESH_TOKEN}","expiresAt":9999999999999,"scopes":["user:file_upload","user:inference","user:mcp_servers","user:profile","user:sessions:claude_code"],"subscriptionType":"max","rateLimitTier":"default_claude_max_5x"}}
 CREDS
-    echo "OAuth credentials configured"
+    echo "OAuth credentials initialized from HA config"
+elif [ -f /data/claude/.credentials.json ]; then
+    echo "Using persisted OAuth credentials from /data/claude/"
+else
+    echo "No credentials yet - run 'claude /login' manually"
 fi
 
 # Create .mcp.json for Claude Code
